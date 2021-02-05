@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Bumper : MonoBehaviour
 {
 
-    public bool BumperP1;
+    [FormerlySerializedAs("BumperP1")] public bool bumperP1;
     public float speed = 5f;
 
     private float _oldYp1;
@@ -21,7 +22,7 @@ public class Bumper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (BumperP1)
+        if (bumperP1)
         {
             var newYp1 = Input.GetAxis("VerticalP1") * speed * Time.deltaTime;
             //if (newYP1 > 4 || newYP1 < -4) newYP1 = oldYP1;

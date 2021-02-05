@@ -1,3 +1,10 @@
+/*
+ * Author: Daniel Jacoby
+ * Date 2/4/21
+ * Project: 3D Pong
+ * Abstract: It's pong, not rocket science. Kinda shitty pong, but pong with Unity Particle System so something?
+ */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,10 +22,10 @@ public class Ball : MonoBehaviour
 
     private AudioSource _audioSource;
 
-    private int scoreP1 = 0;
-    private int scoreP2 = 0;
+    private int _scoreP1 = 0;
+    private int _scoreP2 = 0;
 
-    private Vector3 originalPosition;
+    private Vector3 _originalPosition;
     
     // Start is called before the first frame update
     void Start()
@@ -33,13 +40,13 @@ public class Ball : MonoBehaviour
 
         GetComponent<Rigidbody>().velocity = new Vector3(speed * rx, speed * ry, 0f);
         
-        originalPosition = transform.position;
+        _originalPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (scoreP1 == 11)
+        if (_scoreP1 == 11)
         {
             PlaySound(goalSound);
             var str = "P1 WINS";
@@ -48,7 +55,7 @@ public class Ball : MonoBehaviour
             ResetGame();
 
         } 
-        if (scoreP2 == 11)
+        if (_scoreP2 == 11)
         {
             PlaySound(goalSound);
             var str = "P2 WINS";
@@ -64,18 +71,18 @@ public class Ball : MonoBehaviour
         if (other.gameObject.CompareTag("GoalRight"))
         {
             PlaySound(goalSound);
-            scoreP1++;
-            Debug.Log("Hit Right Goal P1 Points: " + scoreP1);
-            var str = scoreP1 + " -- " + scoreP2;
+            _scoreP1++;
+            Debug.Log("Hit Right Goal P1 Points: " + _scoreP1);
+            var str = _scoreP1 + " -- " + _scoreP2;
             txt.text = str;
             ResetBallPosition();
         } 
         if (other.gameObject.CompareTag("GoalLeft"))
         {
             PlaySound(goalSound);
-            scoreP2++;
-            Debug.Log("Hit Left Goal P2 Points: " + scoreP2);
-            var str = scoreP1 + " -- " + scoreP2;
+            _scoreP2++;
+            Debug.Log("Hit Left Goal P2 Points: " + _scoreP2);
+            var str = _scoreP1 + " -- " + _scoreP2;
             txt.text = str;
             ResetBallPosition();
         }
@@ -83,9 +90,9 @@ public class Ball : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             PlaySound(impactSound);
-            var NewSpeed = speed + 2f;
-            Debug.Log("Hit Bumper Increase Speed to: " + NewSpeed);
-            speed = NewSpeed;
+            var newSpeed = speed + 2f;
+            Debug.Log("Hit Bumper Increase Speed to: " + newSpeed);
+            speed = newSpeed;
         }
 
         if (other.gameObject.CompareTag("Wall"))
@@ -98,21 +105,21 @@ public class Ball : MonoBehaviour
 
     private void ResetBallPosition()
     {
-        transform.position = originalPosition;
+        transform.position = _originalPosition;
         speed = 5f;
     }
     
-    public void ResetGame()
+    private void ResetGame()
     {
-        transform.position = originalPosition;
+        transform.position = _originalPosition;
         speed = 5f;
-        scoreP1 = 0;
-        scoreP2 = 0;
-        var str = scoreP1 + " -- " + scoreP2;
+        _scoreP1 = 0;
+        _scoreP2 = 0;
+        var str = _scoreP1 + " -- " + _scoreP2;
         txt.text = str;
     }
 
-    void PlaySound(AudioClip soundClip)
+    private void PlaySound(AudioClip soundClip)
     {
         _audioSource.clip = soundClip;
         _audioSource.Play();
