@@ -7,6 +7,7 @@ TagManager:
   - BallObject
   - GoalLeft
   - GoalRight
+  - Wall
   layers:
   - Default
   - TransparentFX

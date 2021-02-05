@@ -16,6 +16,7 @@ public class Ball : MonoBehaviour
 {
     public float speed = 5f;
     public Text txt;
+    public float dynamicDifficulty = 1f;
 
     public AudioClip goalSound;
     public AudioClip impactSound;
@@ -49,19 +50,20 @@ public class Ball : MonoBehaviour
         if (_scoreP1 == 11)
         {
             PlaySound(goalSound);
-            var str = "P1 WINS";
+            var str = "Game Over, P1 WINS";
             txt.text = str;
             Debug.Log(str);
             ResetGame();
-
+            dynamicDifficulty += 10f;
         } 
         if (_scoreP2 == 11)
         {
             PlaySound(goalSound);
-            var str = "P2 WINS";
+            var str = "Game Over, P2 WINS";
             txt.text = str;
             Debug.Log(str);
             ResetGame();
+            dynamicDifficulty += 10f;
         }
     }
 
@@ -75,7 +77,7 @@ public class Ball : MonoBehaviour
             Debug.Log("Hit Right Goal P1 Points: " + _scoreP1);
             var str = _scoreP1 + " -- " + _scoreP2;
             txt.text = str;
-            ResetBallPosition();
+            ResetBallPosition(other);
         } 
         if (other.gameObject.CompareTag("GoalLeft"))
         {
@@ -84,13 +86,13 @@ public class Ball : MonoBehaviour
             Debug.Log("Hit Left Goal P2 Points: " + _scoreP2);
             var str = _scoreP1 + " -- " + _scoreP2;
             txt.text = str;
-            ResetBallPosition();
+            ResetBallPosition(other);
         }
         
         if (other.gameObject.CompareTag("Player"))
         {
             PlaySound(impactSound);
-            var newSpeed = speed + 2f;
+            var newSpeed = speed + 2f * dynamicDifficulty;
             Debug.Log("Hit Bumper Increase Speed to: " + newSpeed);
             speed = newSpeed;
         }
@@ -99,14 +101,13 @@ public class Ball : MonoBehaviour
         {
             PlaySound(impactSound);
         }
-
-        //Debug.Log("Hit a wall");
     }
 
-    private void ResetBallPosition()
+    private void ResetBallPosition(Collision obj)
     {
         transform.position = _originalPosition;
         speed = 5f;
+        
     }
     
     private void ResetGame()
