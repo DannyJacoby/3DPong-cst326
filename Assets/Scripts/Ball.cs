@@ -24,6 +24,8 @@ public class Ball : MonoBehaviour
 
     public AudioClip goalSound;
     public AudioClip impactSound;
+    public AudioClip posPaddleImpactSound;
+    public AudioClip negPaddleImpactSound;
 
     private AudioSource _audioSource;
 
@@ -53,7 +55,6 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if (_scoreP1 < _scoreP2) { p1ScoreTxt.color = Color.red; }
         else if (_scoreP1 == _scoreP2) { p1ScoreTxt.color = Color.white; }
         else { p1ScoreTxt.color = Color.green; }
@@ -61,25 +62,6 @@ public class Ball : MonoBehaviour
         else if (_scoreP1 == _scoreP2) { p2ScoreTxt.color = Color.white; }
         else { p2ScoreTxt.color = Color.green; }
         
-        
-        // if (_scoreP1 == 11)
-        // {
-        //     PlaySound(goalSound);
-        //     var str = "Game Over, P1 WINS";
-        //     txt.text = str;
-        //     Debug.Log(str);
-        //     ResetGame();
-        //     dynamicDifficulty += 10f;
-        // } 
-        // if (_scoreP2 == 11)
-        // {
-        //     PlaySound(goalSound);
-        //     var str = "Game Over, P2 WINS";
-        //     txt.text = str;
-        //     Debug.Log(str);
-        //     ResetGame();
-        //     dynamicDifficulty += 10f;
-        // }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -104,10 +86,6 @@ public class Ball : MonoBehaviour
             str = _scoreP1.ToString();
             p1ScoreTxt.text = str;
             
-            // if (_scoreP1 < _scoreP2) { p1ScoreTxt.color = Color.red; }
-            // else if (_scoreP1 == _scoreP2) { p1ScoreTxt.color = Color.white; }
-            // else { p1ScoreTxt.color = Color.green; }
-            
             ResetBallPosition(other);
         } 
         if (other.gameObject.CompareTag("GoalLeft"))
@@ -129,16 +107,15 @@ public class Ball : MonoBehaviour
             str = _scoreP2.ToString();
             p2ScoreTxt.text = str;
             
-            // if (_scoreP2 < _scoreP1) { p2ScoreTxt.color = Color.red; }          
-            // else if (_scoreP1 == _scoreP2) { p2ScoreTxt.color = Color.white; }
-            // else { p2ScoreTxt.color = Color.green; }
-            
             ResetBallPosition(other);
         }
         
         if (other.gameObject.CompareTag("Player"))
         {
-            PlaySound(impactSound);
+            var relativeBallToPaddlePosition = this.transform.position.y - other.transform.position.y; // Ball pos y - Paddle pos y
+            PlaySound(relativeBallToPaddlePosition <= 0 ? negPaddleImpactSound : posPaddleImpactSound);
+           
+            // check if this.x is positive (coming from P1) if negative (coming from P2)
             var newSpeed = speed + 2f * dynamicDifficulty;
             Debug.Log("Hit Bumper Increase Speed to: " + newSpeed);
             speed = newSpeed;

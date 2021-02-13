@@ -8,6 +8,7 @@ TagManager:
   - GoalLeft
   - GoalRight
   - Wall
+  - Powerup
   layers:
   - Default
   - TransparentFX
