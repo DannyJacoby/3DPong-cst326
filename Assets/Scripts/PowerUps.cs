@@ -54,10 +54,12 @@ public class PowerUps : MonoBehaviour
                 if (isNegativePowerUp)
                 {
                     player2.IncreaseSize(1f + Time.deltaTime);
+                    player2.DecreasePaddleSpeed(1f + Time.deltaTime);
                 }
                 else
                 {
                     player1.DecreaseSize(1f + Time.deltaTime);
+                    player1.IncreasePaddleSpeed(1f + Time.deltaTime);
                 }
             }
             else if (currentX > 0) //coming from p1
@@ -66,10 +68,12 @@ public class PowerUps : MonoBehaviour
                 if (isNegativePowerUp)
                 {
                     player1.IncreaseSize(1f + Time.deltaTime);
+                    player1.DecreasePaddleSpeed(1f + Time.deltaTime);
                 }
                 else
                 {
                     player2.DecreaseSize(1f + Time.deltaTime);
+                    player2.IncreasePaddleSpeed(1f + Time.deltaTime);
                 }
             }
         }

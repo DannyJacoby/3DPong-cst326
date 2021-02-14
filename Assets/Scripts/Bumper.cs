@@ -7,7 +7,7 @@ public class Bumper : MonoBehaviour
 {
 
     [FormerlySerializedAs("BumperP1")] public bool bumperP1;
-    public float speed = 5f;
+    public float speed = 7f;
 
     // public float scaleVariable = 5f;
     // private float _oldYp1;
@@ -35,5 +35,21 @@ public class Bumper : MonoBehaviour
     public void DecreaseSize(float scaleVariable)
     {
         this.gameObject.transform.localScale -= new Vector3(0, scaleVariable, 0);
+    }
+
+    public void IncreasePaddleSpeed(float speedVariable)
+    {
+        this.speed += speedVariable;
+    }
+
+    public void DecreasePaddleSpeed(float speedVariable)
+    {
+        this.speed -= speedVariable;
+    }
+
+    public void ResetPaddle()
+    {
+        this.gameObject.transform.localScale = new Vector3(0.5f, 5f, 1f);
+        this.speed = 7f;
     }
 }

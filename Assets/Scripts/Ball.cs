@@ -34,6 +34,9 @@ public class Ball : MonoBehaviour
 
     private Vector3 _originalPosition;
 
+    private Bumper player1;
+
+    private Bumper player2;
     // private float r = 0.2f, g = 0.3f, b = 0.7f, a = 0.6f;
 
     void Awake()
@@ -50,6 +53,11 @@ public class Ball : MonoBehaviour
         GetComponent<Rigidbody>().velocity = new Vector3(speed * rx, speed * ry, 0f);
         
         _originalPosition = transform.position;
+        
+        GameObject gm1 = GameObject.FindWithTag("Player1");
+        player1 = gm1.GetComponent<Bumper>();
+        GameObject gm2 = GameObject.FindWithTag("Player2");
+        player2 = gm2.GetComponent<Bumper>();
     }
 
     // Update is called once per frame
@@ -110,7 +118,7 @@ public class Ball : MonoBehaviour
             ResetBallPosition(other);
         }
         
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player1") || other.gameObject.CompareTag("Player2"))
         {
             var relativeBallToPaddlePosition = this.transform.position.y - other.transform.position.y; // Ball pos y - Paddle pos y
             PlaySound(relativeBallToPaddlePosition <= 0 ? negPaddleImpactSound : posPaddleImpactSound);
@@ -131,7 +139,8 @@ public class Ball : MonoBehaviour
     {
         transform.position = _originalPosition;
         speed = 5f;
-        
+        player1.ResetPaddle();
+        player2.ResetPaddle();
     }
     
     private void ResetGame()
@@ -142,6 +151,8 @@ public class Ball : MonoBehaviour
         _scoreP2 = 0;
         var str = _scoreP1 + " -- " + _scoreP2;
         txt.text = str;
+        player1.ResetPaddle();
+        player2.ResetPaddle();
     }
 
     private void PlaySound(AudioClip soundClip)
